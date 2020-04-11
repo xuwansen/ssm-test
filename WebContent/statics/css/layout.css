@@ -1,0 +1,47 @@
+body{
+	text-align: center;
+	font-family: "microsoft yahei";
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
+.clear{
+	clear: both;
+}
+header{
+	background-color: #E5ECF7;
+}
+.header_layout{
+	width: 80%;
+	height: 30px;
+	margin: 0px auto;
+	text-align: center;
+}
+.section{
+	background-color: white;
+	width: 80%;
+	margin: 0px auto;
+}
+ul{
+	text-align: center;
+}
+ul li{
+	font-size: 20px;
+}
+.div_main{
+	width: 60%;
+	margin: 5px auto;
+	height: 280px;
+}
+.div_picture{
+	width: 60%;
+	margin: 5px auto;
+}
+footer{
+	height:100px ;
+	background-color: #E5ECF7;
+}
+

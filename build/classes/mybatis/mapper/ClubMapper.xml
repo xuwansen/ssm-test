@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xit.dao.ClubDao">
+	<!--List<Club> selectAll();  -->
+	<select id="selectAllByPage" resultMap="clubInfo">
+		select c.*,u.user_name from club c left join user u on c.club_owner = u.user_id
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!--int CountClubs();  -->
+	<select id="CountClubs" resultType="int">
+		select count(*) from club
+	</select>
+	 
+	<!--List<Club> selectClubByCondition(Integer page, Integer pageSize, String clubName);  -->
+	<select id="selectClubByCondition" resultMap="clubInfo">
+		select c.*,u.user_name from club c left join user u on c.club_owner = u.user_id
+		where club_name like '%${clubName}%'
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!--int CountClubsByCondition(String clubName);  -->
+	<select id="CountClubsByCondition" resultType="int">
+		select count(*) from club 
+		where club_name like '%${clubName}%'
+	</select>
+	
+	<!-- void insertClub(Club club); -->
+	<!-- <insert id="insertClub">
+		insert into club(club_name,club_owner,club_info,create_time)
+		values(#{clubName},#{clubOwner},#{clubInfo},#{createTime})
+	</insert> -->
+	
+	<!-- Club selectClubByUser(Integer userId); -->
+	<select id="selectClubByUser" resultMap="clubInfo">
+		select * from club 
+		where club_owner=#{userId}
+	</select>
+	
+	<!-- void deleteClubByClubId(Integer clubId); -->
+	<delete id="deleteClubByClubId">
+		delete from club 
+		where club_id = #{clubId}
+	</delete>
+	
+	<resultMap type="com.xit.beans.Club" id="clubInfo">
+		<id property="clubId" column="club_id"/>
+		<result property="clubName" column="club_name"/>
+		<result property="clubInfo" column="club_info"/>
+		<result property="clubOwner" column="club_owner"/>
+		<association property="user" javaType="com.xit.beans.User">
+			<result property="userName" column="user_name"/> 			
+		</association>
+	</resultMap>
+</mapper>

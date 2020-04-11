@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xit.dao.ApplicationDao"> 
+	<resultMap type="com.xit.beans.Application" id="application">
+		<id property="id" column="id" />
+		<result property="applicant" column="applicant"/>
+		<result property="targetClub" column="target_club"/>
+		<result property="category" column="category"/>
+		<result property="applicationDate" column="application_date"/>
+		<result property="status" column="status"/>
+		<collection property="user" javaType="com.xit.beans.User">
+			<id property="userId" column="user_id"/>
+			<result property="userName" column="user_name"/>
+			<result property="phone" column="phone"/>
+		</collection>
+		<collection property="club" javaType="com.xit.beans.Club">
+			<result property="clubName" column="club_name"/>
+		</collection>
+	</resultMap>
+	
+	<!-- void insertApplication(Application application); -->
+	<insert id="insertApplication">
+		insert into application(applicant,category,target_club,application_date,status)
+		values(#{applicant},#{category},#{targetClub},#{applicationDate},#{status})
+	</insert>
+	
+	<!-- Application selectApplicationByUserIdAndClubId(@Param("userId")int userId,@Param("clubId")int clubId); -->
+	<select id="selectApplicationByUserIdAndClubId" resultMap="application">
+		select * from application 
+		where applicant=#{userId}
+	</select>
+	
+	<!-- int countApplications(); -->
+	<select id="countApplications" resultType="int">
+		select count(*) from application
+	</select>
+	
+	<!-- List<Club> selectAllByPage(@Param("pageNo")Integer pageNo,@Param("pageSize")Integer pageSize); -->
+	<select id="selectAllByPage" resultMap="application">
+		select a.*,u.user_name,c.club_name 
+		from application a left join club c on a.target_club=c.club_id
+		left join user u on a.applicant = u.user_id
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!-- void delete(Integer id); -->
+	<delete id="delete">
+		delete from application
+		where id=#{id}
+	</delete>
+	
+	<!--List<Application> selectAllByPageAndClub(@Param("pageNo")Integer pageNo,@Param("pageSize")Integer pageSize,@Param("clubId") Integer clubId);  -->
+	<select id="selectAllByPageAndClub" resultMap="application">
+		select a.*,u.user_name,u.phone,c.club_name 
+		from application a left join club c on a.target_club=c.club_id
+		left join user u on a.applicant = u.user_id
+		where target_club=#{clubId}
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<!-- int countApplicationsByClub(Integer clubId); -->
+	<select id="countApplicationsByClub" resultType="int">
+		select count(*)
+		from application
+		where target_club=#{clubId} And category='加入社团'
+	</select>
+	
+	<!-- void updateApplicationById(Integer id, String status); -->
+	<update id="updateApplicationById">
+		update application
+		set status=#{status}
+		where id=#{id}
+	</update>
+	
+	<!-- void addApplicationByCreateClub(Application application); -->
+	<!-- <insert id="addApplicationByCreateClub">
+		insert into createclub(user_id,user_name,phone,club_name,club_info)
+		values(#{applicant},#{},#{applicationDate},#{status})
+	</insert> -->
+</mapper>

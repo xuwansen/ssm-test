@@ -1,0 +1,18 @@
+
+table{
+	width:80%;
+	text-align: center;
+	border: 2px solid orange;
+}
+table tr{
+}
+table tr th{
+	background-color: orange;
+	width: 30px;
+	height: 25px;
+	text-align: center;
+}
+table tr td{
+	width: 30px;
+	border: 2px solid orange;
+}
